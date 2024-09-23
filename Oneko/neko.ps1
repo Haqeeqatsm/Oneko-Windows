@@ -5,21 +5,21 @@ $nekoPath = "C:\Users\there\OneDrive\Documents\Oneko-Windows\Oneko\neko.exe"
 function Run-Neko {
     $arguments = "-scale $global:scale -speed $global:speed"
     if ($global:quiet) { $arguments += " -quiet" }
-    if ($global:mousePassthrough) { $arguments += " -mousepassthrough" }
     
     Start-Process -FilePath $nekoPath -ArgumentList $arguments -NoNewWindow
+    $runButton.Enabled = $false  # Disable the Run Neko button after running
 }
 
 # Create a function to end the program
 function End-Neko {
     Stop-Process -Name "neko" -Force
+    $runButton.Enabled = $true  # Re-enable the Run Neko button after ending
 }
 
 # Variables for settings
 $global:scale = 2.0
 $global:speed = 2
 $global:quiet = $true
-$global:mousePassthrough = $false
 
 # Load the WinForms assembly
 Add-Type -AssemblyName System.Windows.Forms
@@ -144,13 +144,6 @@ $quietCheckBox.Location = New-Object System.Drawing.Point(10, 110)
 $quietCheckBox.Checked = $global:quiet
 $form.Controls.Add($quietCheckBox)
 
-# Toggle for Mouse Passthrough
-$mousePassthroughCheckBox = New-Object System.Windows.Forms.CheckBox
-$mousePassthroughCheckBox.Text = "Mouse Passthrough"
-$mousePassthroughCheckBox.Location = New-Object System.Drawing.Point(10, 140)
-$mousePassthroughCheckBox.Checked = $global:mousePassthrough
-$form.Controls.Add($mousePassthroughCheckBox)
-
 # Buttons for Run and End
 $runButton = New-Object System.Windows.Forms.Button
 $runButton.Text = "Run Neko"
@@ -159,7 +152,6 @@ $runButton.Add_Click({
     $global:scale = $scaleSlider.Value
     $global:speed = $speedSlider.Value
     $global:quiet = $quietCheckBox.Checked
-    $global:mousePassthrough = $mousePassthroughCheckBox.Checked
     Run-Neko
 })
 $form.Controls.Add($runButton)
@@ -188,7 +180,6 @@ function Enable-ConfirmButton {
 $scaleSlider.Add_ValueChanged({ Enable-ConfirmButton })
 $speedSlider.Add_ValueChanged({ Enable-ConfirmButton })
 $quietCheckBox.Add_CheckedChanged({ Enable-ConfirmButton })
-$mousePassthroughCheckBox.Add_CheckedChanged({ Enable-ConfirmButton })
 
 # Confirm button click event to end and re-run Neko
 $confirmButton.Add_Click({
@@ -196,12 +187,9 @@ $confirmButton.Add_Click({
     $global:scale = $scaleSlider.Value
     $global:speed = $speedSlider.Value
     $global:quiet = $quietCheckBox.Checked
-    $global:mousePassthrough = $mousePassthroughCheckBox.Checked
     Run-Neko
     $confirmButton.Enabled = $false  # Disable the button again after use
 })
-
-
 
 # Show the form when the script starts
 $form.Show()
