@@ -1,5 +1,5 @@
 # Define the path to the neko executable
-$nekoPath = "C:\Users\there\OneDrive\Desktop\neko-0.1.32\neko.exe"
+$nekoPath = "C:\Users\there\OneDrive\Documents\Oneko-Windows\Oneko\neko.exe"
 
 # Create a function to run the program
 function Run-Neko {
@@ -35,10 +35,10 @@ $form.MinimizeBox = $true
 $form.ShowInTaskbar = $false
 
 # Set the icon for the form window
-$form.Icon = "C:\Users\there\OneDrive\Desktop\neko-0.1.32\assets\main icon.ico"
+$form.Icon = "C:\Users\there\OneDrive\Documents\Oneko-Windows\Oneko\assets\main icon.ico"
 
 # Add system tray icon
-$iconPath = "C:\Users\there\OneDrive\Desktop\neko-0.1.32\assets\main icon.ico"
+$iconPath = "C:\Users\there\OneDrive\Documents\Oneko-Windows\Oneko\assets\main icon.ico"
 $tooltip = "Neko Settings"
 
 $trayIcon = [System.Windows.Forms.NotifyIcon]::new()
